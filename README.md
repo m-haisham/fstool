@@ -1,8 +1,4 @@
-# dirCrawler
+# Fstool
 
-* file system crawler
-```python
-from dircrawler import crawl
-
-crawl(*args, **kwargs)
-```
+* directory system restructuring
+* directory system iterative search
