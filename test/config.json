@@ -1,0 +1,17 @@
+{
+    "aiml": [
+        "*.aiml"
+    ],
+    "aimlf": [
+        "*.csv"
+    ],
+    "config": [{
+        "old": "*.properties",
+        "new": "properties.txt"
+    }],
+    "maps": [],
+    "sets": [],
+    "substitutions": [
+        "*.substitution"
+    ]
+}
