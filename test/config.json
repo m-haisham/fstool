@@ -1,17 +1,14 @@
 {
     "aiml": [
-        "*.aiml"
-    ],
-    "aimlf": [
-        "*.csv"
+        ".+\\.txt"
     ],
     "config": [{
-        "old": "*.properties",
-        "new": "properties.txt"
+        "old": "(.+)\\.properties",
+        "new": "\\1.txt"
     }],
     "maps": [],
     "sets": [],
     "substitutions": [
-        "*.substitution"
+        "New Text Document - Copy \\(.\\)\\.txt"
     ]
 }

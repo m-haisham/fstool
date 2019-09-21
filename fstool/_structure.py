@@ -1,9 +1,16 @@
-from pathlib import Path
+import re
 import shutil
+from pathlib import Path
+
+from .external.regexfind import SubsetGraph, default_tests
 
 
 def restructure(config: dict, home: str, files: list = [], verbose: bool = False, move: bool = True):
     home = Path(home)
+
+    graph = SubsetGraph(default_tests)
+    for key in config.keys():
+        graph.add_regex(key)
 
     # create Path objects from all files
     files = [Path(i) for i in files]
@@ -13,22 +20,22 @@ def restructure(config: dict, home: str, files: list = [], verbose: bool = False
 
         new_file = None
 
-        try:
-            # if file specified
-            match_object = config[file.parts[-1]]  # get the matching object from config
+        match = graph.match(str(file.parts[-1]))
+        if match:  # if there is a match
+            # print(match[0].string)
 
-            # get Path of new file
-            new_file = home / Path(match_object['dir']) / Path(
-                f'{file.stem}{match_object["file"][1:]}' if match_object["file"][:2] == '*.' else match_object["file"])
-        except KeyError:
-            # or else if extension specified
-            if f'*{file.suffix}' in config.keys():
-                match_object = config[f'*{file.suffix}']  # get the matching object from config
+            match_object = config[match[0].string]
+            if match[0].string == match_object['file']:
+                new_file = home / Path(match_object['dir']) / Path(file.parts[-1])
+            else:
+                original_match = re.match(match[0].string, str(file.parts[-1]))
+                new_match = re.match(r'.+', match_object['file'])
 
-                # get Path of new file
-                new_file = home / Path(match_object['dir']) / Path(
-                    f'{file.stem}{match_object["file"][1:]}' if match_object["file"][:2] == '*.' else match_object[
-                        "file"])
+                try:
+                    new_file = home / Path(match_object['dir']) / re.sub(match[0].string, match_object['file'], str(file.parts[-1]))
+                except re.error as e:
+                    print(f'[ERROR] {file} - {e}')
+                # print(new_file)
 
         # if no new file skip
         if not new_file:
