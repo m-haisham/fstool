@@ -7,7 +7,7 @@ python3 -m pip install fstool
 ```
 
 Command line tool
-```python
+```bash
 python3 -m fstool -h
 
 usage: __main__.py [-h] [-p PATH] [-c CONFIG] [-v] [-m] [-s START] [-e END]
