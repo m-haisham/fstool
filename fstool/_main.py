@@ -4,10 +4,9 @@ import os
 from pathlib import Path
 from typing import Dict
 
-from dircrawler import crawl
-
-from ._config import parse_config
-from ._structure import restructure
+from . import crawl
+from . import parse_config
+from . import restructure
 
 
 def main():
