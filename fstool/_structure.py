@@ -2,7 +2,7 @@ import re
 import shutil
 from pathlib import Path
 
-from .external.regexfind import SubsetGraph, default_tests
+from .external import SubsetGraph, default_tests
 
 
 def restructure(config: dict, home: str, files: list = [], verbose: bool = False, move: bool = True):
