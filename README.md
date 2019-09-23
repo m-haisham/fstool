@@ -10,8 +10,10 @@ Command line tool
 ```bash
 python3 -m fstool -h
 
-usage: __main__.py [-h] [-p PATH] [-c CONFIG] [-v] [-m] [-s START] [-e END]
-                   {restructure}
+usage: __main__.py [-h] [-p PATH] [-c CONFIG] [-v] [-m] [-o] [-s START] [-e END]
+{restructure}
+
+format file directory files
 
 positional arguments:
   {restructure}
@@ -23,6 +25,7 @@ optional arguments:
                         config file location. default is config.json
   -v, --verbose         increase output verbosity
   -m, --move            moves files instead of default copy
+  -o, --overwrite       ovewrites the file if it exists
   -s START, --start START
                         start depth of file search
   -e END, --end END     end depth of file search
@@ -35,11 +38,14 @@ Exposes three functions to the public
 * restructure
 ```python
 restructure(
-    config: dict,
     home: str,
-    files: list = [],
+    files: list,
+    config: dict,
+    *,
+    move: bool = True,
+    overwrite: bool = False,
     verbose: bool = False,
-    move: bool = True):
+):
 ```
 
 `config` is a dictionary of instructions on how to restructure the `files`, an example of which would be
@@ -113,5 +119,9 @@ To default parameters left to it would iterate through all the subdirectories
 `etc`
 
 * parse_config
+
+```python
+parse_config(config: dict) -> dict:
+```
 
 Compiles input json to a more efficient version which can be used by the `restructure` function

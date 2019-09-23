@@ -16,6 +16,7 @@ def main():
     parser.add_argument('-c', '--config', help='config file location. default is config.json', default='config.json')
     parser.add_argument('-v', '--verbose', help='increase output verbosity', action='store_true')
     parser.add_argument('-m', '--move', help='moves files instead of default copy', action='store_true')
+    parser.add_argument('-o', '--overwrite', help='ovewrites the file if it exists', action='store_true')
     parser.add_argument('-s', '--start', help='start depth of file search', default=None)
     parser.add_argument('-e', '--end', help='end depth of file search', default=None)
 
@@ -32,7 +33,15 @@ def _restructure_from_args(args):
 
     parsed_config = parse_config(raw_config)
     print(parsed_config)
-    files, dirs = crawl(args.path, start_depth=args.start if args.start else 0,
+    files, _ = crawl(args.path, start_depth=args.start if args.start else 0,
                         end_depth=args.end if args.end else -1)
     print(files)
-    restructure(parsed_config, args.path, files, args.verbose, args.move)
+
+    restructure(
+        args.path,
+        files,
+        parsed_config,
+        overwrite=args.overwrite,
+        move=args.move,
+        verbose=args.verbose,
+    )

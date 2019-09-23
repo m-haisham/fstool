@@ -5,7 +5,15 @@ from pathlib import Path
 from .external import SubsetGraph, default_tests
 
 
-def restructure(config: dict, home: str, files: list = [], verbose: bool = False, move: bool = True):
+def restructure(
+        home: str,
+        files: list,
+        config: dict,
+        *,
+        move: bool = True,
+        overwrite: bool = False,
+        verbose: bool = False,
+    ):
     home = Path(home)
 
     graph = SubsetGraph(default_tests)
@@ -44,12 +52,13 @@ def restructure(config: dict, home: str, files: list = [], verbose: bool = False
         # create parent directory
         new_file.parent.mkdir(parents=True, exist_ok=True)
 
-        if verbose:
-            print(f'[{"MOVE" if move else "COPY"}] {file} -> {new_file}')
 
-        if not new_file.exists():
+        if not new_file.exists() and not overwrite:
             # copy file to new location
             shutil.copy(str(file), str(new_file))
-        if move:
-            # remove old file
-            file.unlink()
+            if move:
+                # remove old file
+                file.unlink()
+
+            if verbose:
+                print(f'[{"MOVE" if move else "COPY"}] {file} -> {new_file}')
