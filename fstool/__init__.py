@@ -2,8 +2,8 @@
 Python filesystem tool abstraction layer
 """
 
-from ._config import parse_config
-from ._crawler import crawl
-from ._structure import restructure
+from .config import parse_config
+from .crawler import crawl
+from .structure import restructure
 
 __version__: str = '0.1.8'
